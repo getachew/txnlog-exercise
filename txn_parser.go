@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"log"
 	"math"
 )
@@ -115,36 +114,6 @@ func parseHeader(b []byte) Header {
 
 	return Header{magicString, version, numRecords}
 
-}
-
-func readHeaderMagicString(rd *bufio.Reader) {
-	log.Println("Curr Size: ", rd.Size())
-
-	magicString := make([]byte, 4)
-	rd.Read(magicString)
-	fmt.Println("magicString: ", string(magicString))
-
-	readHeaderVersion(rd)
-}
-
-func readHeaderVersion(rd *bufio.Reader) {
-	version, err := rd.ReadByte()
-	if err != nil {
-		log.Fatal("Error parsing txn log header version")
-	}
-	fmt.Println("version: ", version)
-	readHeaderNumRecords(rd)
-}
-
-func readHeaderNumRecords(rd *bufio.Reader) {
-	numRecords := make([]byte, 4)
-	rd.Read(numRecords)
-	n := systemByteOrder.Uint32(numRecords)
-	fmt.Print("length of records: ", n)
-	// emit header
-
-	// parse body
-	parseTxn(rd)
 }
 
 func parseTxn(rd *bufio.Reader) {
